@@ -64,7 +64,7 @@ Addon:
 {
   "nombre": "Paquete de Skins de Fantasy",
   "tipo": "Skin",
-  "urlMiniatura": "https://miapp.com/skins/fantasy.png",
+  "urlMiniatura": "httpss://miapp.com/skins/fantasy.png",
   "descripcion": "Este paquete contiene más de 20 skins únicas inspiradas en personajes de fantasía medieval, incluyendo armaduras, criaturas mágicas y más."
 }
 
@@ -80,35 +80,45 @@ DROP TABLE IF EXISTS addon;
 
 //me falta el añadir un creador al addon
 //LOGIN
-GET  | http://localhost:8081/api/auth/login
-GET  | http://localhost:8081/api/auth/removerJWT
-GET  | http://localhost:8081/api/auth/renovarJWT
+GET  | https://localhost:8443/api/auth/login
+GET  | https://localhost:8443/api/auth/removerJWT
+GET  | https://localhost:8443/api/auth/renovarJWT
 
 //ADMIN
-POST | http://localhost:8081/api/administrador > Creamos admin
-GET  | http://localhost:8081/api/administrador/consultar-creadores
-GET  | http://localhost:8081/api/administrador/consultar-usuarios
+POST | https://localhost:8443/api/administrador > Creamos admin
+GET  | https://localhost:8443/api/administrador/consultar-creadores
+GET  | https://localhost:8443/api/administrador/consultar-usuarios
 
 //USER
-POST | http://localhost:8081/api/usuario > Crea Usuario
-GET  | http://localhost:8081/api/usuario > Ver informacion
-GET  | http://localhost:8081/api/usuario/{id} > Ver si un usuario existe
+POST | https://localhost:8443/api/usuario > Crea Usuario
+GET  | https://localhost:8443/api/usuario > Ver informacion
+GET  | https://localhost:8443/api/usuario/{id} > Ver si un usuario existe
 
 //CREADOR
-POST  | http://localhost:8081/api/creador > Transformar usuario a creador
+POST  | https://localhost:8443/api/creador > Transformar usuario a creador
+PUT   | https://localhost:8443/api/creador/modificar/espacialidad > Enviar JSON para cambiar especialidad
 
 //SUBSCRIBE
-POST | http://localhost:8081/api/subscripcion/susbscribe/{idCreador} > Suscribirse al creador
-GET  | http://localhost:8081/api/subscripcion/subscritos > Ver a que creadores de has subscritos
-PUT  | http://localhost:8081/api/subscripcion/modificar/{idCreador} > Altera entre true o false las notificaciones del creador suscrito
+POST | https://localhost:8443/api/subscripcion/susbscribe/{idCreador} > Suscribirse al creador
+GET  | https://localhost:8443/api/subscripcion/subscritos > Ver a que creadores de has subscritos
+PUT  | https://localhost:8443/api/subscripcion/modificar/{idCreador} > Altera entre true o false las notificaciones del creador suscrito
 
 //Addon
-POST | http://localhost:8081/api/addon > SUBES UN ADDON, tu status del addon es creador
-GET  | http://localhost:8081/api/addon > DEVUELVE TODO LOS ADDONS
-GET  | http://localhost:8081/api/addon/creadores/{idAddon} > DEVUELVE LOS participantes de un addon
-GET  | http://localhost:8081/api/addon/invitar/enviar/{idAddon}/{idCreador} > invitar un usuario a un addon
-GET  | http://localhost:8081/api/addon/invitar/aceptar/{idAddon} > Aceptas invitacion enviada
-GET  | http://localhost:8081/api/addon/invitar/rechazar/{idAddon} > Rechazas invitacion enviada
-GET  | http://localhost:8081/api/addon/mis-creaciones > Visualizas tus creacioes, siendo colaborador o creador
-GET  | http://localhost:8081/api/addon/mis-invitaciones > Visualizas tus invitaciones, solo las pendientes
-PUT  | http://localhost:8081/api/addon/darlike/{idAddon} > das like a un addon
+POST | https://localhost:8443/api/addon > SUBES UN ADDON, tu status del addon es creador
+GET  | https://localhost:8443/api/addon > DEVUELVE TODO LOS ADDONS
+GET  | https://localhost:8443/api/addon/creadores/{idAddon} > DEVUELVE LOS participantes de un addon
+GET  | https://localhost:8443/api/addon/invitar/enviar/{idAddon}/{idCreador} > invitar un usuario a un addon
+GET  | https://localhost:8443/api/addon/invitar/aceptar/{idAddon} > Aceptas invitacion enviada
+GET  | https://localhost:8443/api/addon/invitar/rechazar/{idAddon} > Rechazas invitacion enviada
+GET  | https://localhost:8443/api/addon/invitar/bloquear/{idAddon}/{idCreador}
+GET  | https://localhost:8443/api/addon/mis-creaciones > Visualizas tus creacioes, siendo colaborador o creador
+GET  | https://localhost:8443/api/addon/mis-invitaciones > Visualizas tus invitaciones, solo las pendientes
+PUT  | https://localhost:8443/api/addon/darlike/{idAddon} > das like a un addon
+
+
+COSASA HA REALIZAR
+- Sistema de comentarios
+- Sistema de Imagenes en addons
+- Sistema de Archivos en addons
+- Sistema de aceptar/rechazar addons por admin
+- Sistema de volver a user a admin

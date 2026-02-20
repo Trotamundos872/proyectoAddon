@@ -41,7 +41,7 @@ public interface AddonRepository extends JpaRepository<Addon, Long> {
     @Query(value = "SELECT addon_id FROM creador_addon WHERE creador_id = :idCreador AND status NOT LIKE 'pendiente'  AND status NOT LIKE 'rechazado'", nativeQuery = true)
     List<Long> getAddonsDeCreador(@Param("idCreador") Long idCreador);
 
-        @Query(value = "SELECT addon_id FROM creador_addon WHERE creador_id = :idCreador AND status LIKE 'pendiente'", nativeQuery = true)
+@Query(value = "SELECT addon_id FROM creador_addon WHERE creador_id = :idCreador AND status LIKE 'pendiente'", nativeQuery = true)
     List<Long> getAddonsDeCreadorPendiente(@Param("idCreador") Long idCreador);
 }
 
