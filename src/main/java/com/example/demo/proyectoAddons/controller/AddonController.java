@@ -57,6 +57,11 @@ public class AddonController {
         return addonService.getAlLAddons();
     }
 
+    @GetMapping("{idAddon}")
+    public Addon devolverAddon(@PathVariable Long idAddon) {
+        return addonService.devolverAddon(idAddon);
+    }
+
     @GetMapping("creadores/{idAddon}")
     public List<String> getCreadorNombreDeUnAddon(@PathVariable Long idAddon) {
         return addonService.getCreadorNombreDeUnAddon(idAddon);
