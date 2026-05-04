@@ -18,7 +18,11 @@ public class SubscripcionService {
 
     @Autowired
     private SubscripcionRepository subscripcionRepository;
+    
+    @Autowired
     private CreadorService creadorService;
+    
+    @Autowired
     private UsuarioService usuarioService;
 
     public Subscripcion createSubscripcion(Subscripcion sub1) {
@@ -67,6 +71,10 @@ public class SubscripcionService {
         return null;
     }
 
+    public void deleteSubscripcion(Long id) {
+        subscripcionRepository.deleteById(id);
+    }
+
     public boolean modificarNotificaciones(Long idSubscripcion) {
 
         Subscripcion sub = subscripcionRepository.findById(idSubscripcion).orElse(null);
@@ -80,5 +88,4 @@ public class SubscripcionService {
         subscripcionRepository.save(sub);
         return true;
     }
-
 }

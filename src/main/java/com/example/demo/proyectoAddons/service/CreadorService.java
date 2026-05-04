@@ -19,6 +19,8 @@ public class CreadorService {
 
     @Autowired
     private CreadorrRepository creadorRepository;
+    @Autowired
+    private UsuarioService usuarioService;
 
     public Creador createCreador(Creador creador) {
         creador.setId(creador.getUsuario().getId());
@@ -39,12 +41,31 @@ public class CreadorService {
     }
 
     public Creador devolverCreador(Long id) {
+        if (id == null) return null;
         return creadorRepository.findById(id).orElse(null);
     }
 
     public boolean modificarEspecialidad(Long id, String especialidadNueva) {
         Creador creadorAct = devolverCreador(id);
+        if (creadorAct != null) {
+            creadorAct.setEspecialidad(especialidadNueva);
+            creadorRepository.save(creadorAct);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean actualizarPerfil(Long id, String nombreNuevo, String especialidadNueva) {
+        Creador creadorAct = devolverCreador(id);
+        if (creadorAct == null || creadorAct.getUsuario() == null) {
+            return false;
+        }
+
+        Usuario usuarioAct = creadorAct.getUsuario();
+        usuarioAct.setNombre(nombreNuevo);
         creadorAct.setEspecialidad(especialidadNueva);
+
+        usuarioService.guardarUsuario(usuarioAct);
         creadorRepository.save(creadorAct);
         return true;
     }

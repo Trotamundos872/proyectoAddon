@@ -12,10 +12,8 @@ import com.example.demo.proyectoAddons.service.UsuarioService;
 
 import java.util.Map;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/auth")
-
 public class AuthController {
 
     @Autowired

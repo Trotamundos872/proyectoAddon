@@ -18,7 +18,6 @@ import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/subscripcion")
 public class SubscripcionController {
@@ -36,12 +35,19 @@ public class SubscripcionController {
             @RequestHeader(name = "Authorization", required = false) String authHeader, @PathVariable Long idCreador) {
 
         Long userId = jwtService.obtenerId(authHeader);
-        Creador creadoraSuscribir = creadorService.devolverCreador(idCreador);
-        Usuario nuevoSubscriptor = usuarioService.devolverUsuario(userId);
-
         if (userId == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Token inválido o expirado"));
         }
+
+        // Si ya está suscrito, la eliminamos (unsubscribe)
+        Long subId = subsService.getSubcripcionID(idCreador, userId);
+        if (subId != null) {
+            subsService.deleteSubscripcion(subId);
+            return ResponseEntity.ok(Map.of("respuesta", "Subscripcion eliminada"));
+        }
+
+        Creador creadoraSuscribir = creadorService.devolverCreador(idCreador);
+        Usuario nuevoSubscriptor = usuarioService.devolverUsuario(userId);
 
         if (creadoraSuscribir == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Creador No Valido"));
@@ -55,6 +61,19 @@ public class SubscripcionController {
         return ResponseEntity.ok(subsService.createSubscripcion(objSubs));
     }
 
+    @GetMapping("/estado/{idCreador}")
+    public ResponseEntity<?> checkEstado(
+            @RequestHeader(name = "Authorization", required = false) String authHeader, @PathVariable Long idCreador) {
+
+        Long userId = jwtService.obtenerId(authHeader);
+        if (userId == null) {
+            return ResponseEntity.ok(Map.of("subscrito", false));
+        }
+
+        boolean subscrito = subsService.getSubcripcionID(idCreador, userId) != null;
+        return ResponseEntity.ok(Map.of("subscrito", subscrito));
+    }
+
     @GetMapping("/subscritos")
     public ResponseEntity<?> verSubscripciones(
             @RequestHeader(name = "Authorization", required = false) String authHeader) {
@@ -66,6 +85,28 @@ public class SubscripcionController {
         }
 
         return ResponseEntity.ok(subsService.getSubscribidos(userId));
+    }
+
+    @GetMapping("/detalles-subscritos")
+    public ResponseEntity<?> verDetallesSubscripciones(
+            @RequestHeader(name = "Authorization", required = false) String authHeader) {
+
+        Long userId = jwtService.obtenerId(authHeader);
+
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Token inválido o expirado"));
+        }
+
+        List<Creador> creadores = subsService.getSubscribidos(userId);
+        List<Map<String, Object>> detalles = creadores.stream().map(c -> {
+            Map<String, Object> map = new java.util.HashMap<>();
+            map.put("id", c.getId());
+            map.put("especialidad", c.getEspecialidad());
+            map.put("nombre", c.getUsuario() != null ? c.getUsuario().getNombre() : "Desconocido");
+            return map;
+        }).toList();
+
+        return ResponseEntity.ok(detalles);
     }
 
     @PutMapping("modificar/{idCreador}")

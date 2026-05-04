@@ -18,7 +18,6 @@ import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/administrador")
 public class AdministradorController {

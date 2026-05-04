@@ -46,6 +46,9 @@ public class UsuarioService {
     public Usuario devolverUsuario(Long id) {
         return usuarioRepository.findById(id).orElse(null);
     }
+    public Usuario guardarUsuario(Usuario usuario) {
+        return usuarioRepository.save(usuario);
+    }
      public Long devolverUsuarioPorCorreo(String correo) {
         Long id = null;
         for (Usuario userAct : this.getAllUsuarios()) {
@@ -68,5 +71,8 @@ public class UsuarioService {
         return esVerficado;
     }
 
-}
+    public Integer totalUsuarios() {
+        return Math.toIntExact(usuarioRepository.count());
+    }
 
+}

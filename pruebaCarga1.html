@@ -14,7 +14,7 @@
         //PRUEBA DE CARGA (MAXIMO 200 Simultaneas)
 
         for (let index = 0; index < 100; index++) {
-            fetch("https://localhost:8443/api/addon")
+            fetch("http://localhost:8080/api/addon")
         .then(responde => {
             return responde.json()
         })

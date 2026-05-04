@@ -22,20 +22,25 @@ public class UsuarioLikeService {
     @Autowired
     private UsuarioService usuarioService;
     
-    public Boolean createLikeLink(Long idUser, Addon addon) {
-    UsuarioLike instanciaDeLike = new UsuarioLike();
-    instanciaDeLike.setAddon(addon);
-    instanciaDeLike.setUsuario(usuarioService.devolverUsuario(idUser));
-    instanciaDeLike.setId(idUser + " " + addon.getId());
-
-    int likeCount = usuarioLikeRepository.getSiDarLike(idUser, addon.getId());
-    if (likeCount == 0) {
-        usuarioLikeRepository.save(instanciaDeLike);
-        return true;
+    public Boolean toggleLikeLink(Long idUser, Addon addon) {
+        int likeCount = usuarioLikeRepository.getSiDarLike(idUser, addon.getId());
+        
+        if (likeCount == 0) {
+            UsuarioLike instanciaDeLike = new UsuarioLike();
+            instanciaDeLike.setAddon(addon);
+            instanciaDeLike.setUsuario(usuarioService.devolverUsuario(idUser));
+            instanciaDeLike.setId(idUser + " " + addon.getId());
+            usuarioLikeRepository.save(instanciaDeLike);
+            return true; // Like añadido 
+        } else {
+            usuarioLikeRepository.deleteById(idUser + " " + addon.getId());
+            return false; // Like borrado 
+        }
     }
 
-    return false;
-}
+    public boolean haDadoLike(Long idUser, Long idAddon) {
+        return usuarioLikeRepository.getSiDarLike(idUser, idAddon) > 0;
+    }
 
 
 }

@@ -7,19 +7,21 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.proyectoAddons.model.Usuario;
 import com.example.demo.proyectoAddons.service.JWTService;
+import com.example.demo.proyectoAddons.service.CreadorService;
 import com.example.demo.proyectoAddons.service.UsuarioService;
 
 import jakarta.validation.Valid;
 
-import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/usuario")
 public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private CreadorService creadorService;
 
     @Autowired
     private JWTService jwtService;
@@ -39,7 +41,18 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Token inválido o expirado"));
         }
         
-        return ResponseEntity.ok(usuarioService.devolverUsuario(userId));
+        Usuario user = usuarioService.devolverUsuario(userId);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Usuario no encontrado"));
+        }
+
+        boolean esCreador = creadorService.creadorExiste(userId);
+        
+        return ResponseEntity.ok(Map.of(
+            "nombre", user.getNombre(),
+            "email", user.getEmail(),
+            "esCreador", esCreador
+        ));
     }
 
     //cualquier usuario puede ver si otro usuario existe

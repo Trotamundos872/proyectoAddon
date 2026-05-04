@@ -1,24 +1,32 @@
 package com.example.demo.proyectoAddons.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.proyectoAddons.model.Addon;
-import com.example.demo.proyectoAddons.model.Creador;
 import com.example.demo.proyectoAddons.service.AddonService;
 import com.example.demo.proyectoAddons.service.CreadorService;
 import com.example.demo.proyectoAddons.service.JWTService;
 import com.example.demo.proyectoAddons.service.UsuarioService;
+
 import jakarta.validation.Valid;
 
-import java.util.List;
-import java.util.Map;
-
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/addon")
+@CrossOrigin(origins = {"http://localhost:4200", "http://127.0.0.1:4200"}, allowedHeaders = "*", allowCredentials = "true")
 public class AddonController {
 
     private final UsuarioService usuarioService;
@@ -29,8 +37,23 @@ public class AddonController {
     @Autowired
     private JWTService jwtService;
 
+    @Autowired
     AddonController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
+    }
+
+    @GetMapping("/perfil/{idcreador}")
+    public ResponseEntity<?> getMisCreacionesdeCreador(@PathVariable Long idcreador) {
+
+        if (idcreador == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "ID de creador no proporcionado"));
+        }
+
+        if (!creadorService.creadorExiste(idcreador)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "El creador no existe"));
+        }
+
+        return ResponseEntity.ok(addonService.getAddonsDeCreador(idcreador));
     }
 
     @PostMapping
@@ -62,18 +85,26 @@ public class AddonController {
         return addonService.devolverAddon(idAddon);
     }
 
+    @GetMapping("buscar")
+    public List<Addon> buscarPorCoincidencia(
+            @RequestParam(required = false) String buscar,
+            @RequestParam(required = false) String orden,
+            @RequestParam(required = false) String categoria) {
+        return addonService.buscarPorCoincidencia(buscar, orden, categoria);
+    }
+
     @GetMapping("creadores/{idAddon}")
     public List<String> getCreadorNombreDeUnAddon(@PathVariable Long idAddon) {
         return addonService.getCreadorNombreDeUnAddon(idAddon);
     }
 
-    @PutMapping("darlike/{idAddon}")
-    public ResponseEntity<?> createAddon(@RequestHeader(name = "Authorization", required = false) String authHeader,
+    @PostMapping("darlike/{idAddon}")
+    public ResponseEntity<?> darLike(@RequestHeader(name = "Authorization", required = false) String authHeader,
             @PathVariable Long idAddon) {
 
         Long userId = jwtService.obtenerId(authHeader);
 
-        //Al pasar de aqui, es un usuario logueado
+        // Al pasar de aqui, es un usuario logueado
         if (userId == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Token inválido o expirado"));
         }
@@ -82,11 +113,43 @@ public class AddonController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "No existe este Addon"));
         }
 
-        if (!addonService.darLike(idAddon,userId)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Ya le has dado like a este Addon"));
+        String resultadoLike = addonService.darLike(idAddon, userId);
+        Addon addonActualizado = addonService.devolverAddon(idAddon);
+        
+        if (resultadoLike.equals("Añadido")) {
+            return ResponseEntity.ok(Map.of(
+                "exito", "Le has dado like a este Addon",
+                "likes", addonActualizado.getLikes()
+            ));
+        } else if (resultadoLike.equals("Quitado")) {
+            return ResponseEntity.ok(Map.of(
+                "exito", "Has quitado tu like de este Addon",
+                "likes", addonActualizado.getLikes()
+            ));
         }
 
-        return ResponseEntity.ok(Map.of("exito", "Le has dado like"));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Error procesando el like"));
+    }
+
+    @GetMapping("darlike/comprobar/{idAddon}")
+    public ResponseEntity<?> comprobarLike(@RequestHeader(name = "Authorization", required = false) String authHeader,
+            @PathVariable Long idAddon) {
+
+        Long userId = jwtService.obtenerId(authHeader);
+
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Token inválido o expirado"));
+        }
+
+        if (!addonService.addonExiste(idAddon)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "No existe este Addon"));
+        }
+
+        boolean haDadoLike = addonService.haDadoLike(idAddon, userId);
+        
+        return ResponseEntity.ok(Map.of(
+            "haDadoLike", haDadoLike
+        ));
     }
 
     @GetMapping("invitar/enviar/{idAddon}/{idCreador}")
@@ -123,7 +186,7 @@ public class AddonController {
         return ResponseEntity.ok(Map.of("exito", "creador invitado al proyecto"));
     }
 
-        @GetMapping("invitar/bloquear/{idAddon}/{idCreador}")
+    @GetMapping("invitar/bloquear/{idAddon}/{idCreador}")
     public ResponseEntity<?> bloquearCreador(@RequestHeader(name = "Authorization", required = false) String authHeader,
             @PathVariable Long idAddon, @PathVariable Long idCreador) {
         Long userId = jwtService.obtenerId(authHeader);
@@ -157,9 +220,9 @@ public class AddonController {
         return ResponseEntity.ok(Map.of("exito", "has bloqueado al creador"));
     }
 
-
     @GetMapping("invitar/aceptar/{idAddon}")
-    public ResponseEntity<?> aceptarInvitacion(@RequestHeader(name = "Authorization", required = false) String authHeader,
+    public ResponseEntity<?> aceptarInvitacion(
+            @RequestHeader(name = "Authorization", required = false) String authHeader,
             @PathVariable Long idAddon) {
         Long userId = jwtService.obtenerId(authHeader);
 
@@ -171,8 +234,9 @@ public class AddonController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "No eres un Creador"));
         }
 
-        if (!addonService.esCreadorInvitado(userId,idAddon)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "No te han invitado a este proyecto"));
+        if (!addonService.esCreadorInvitado(userId, idAddon)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "No te han invitado a este proyecto"));
         }
 
         addonService.actualizarStatusCreadorAddon(userId, idAddon, "colaborador");
@@ -180,8 +244,9 @@ public class AddonController {
         return ResponseEntity.ok(Map.of("exito", "Has aceptado la invitacion al proyecto"));
     }
 
-        @GetMapping("invitar/rechazar/{idAddon}")
-    public ResponseEntity<?> rechazarInvitacion(@RequestHeader(name = "Authorization", required = false) String authHeader,
+    @GetMapping("invitar/rechazar/{idAddon}")
+    public ResponseEntity<?> rechazarInvitacion(
+            @RequestHeader(name = "Authorization", required = false) String authHeader,
             @PathVariable Long idAddon) {
         Long userId = jwtService.obtenerId(authHeader);
 
@@ -193,15 +258,15 @@ public class AddonController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "No eres un Creador"));
         }
 
-        if (!addonService.esCreadorInvitado(userId,idAddon)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "No te han invitado a este proyecto"));
+        if (!addonService.esCreadorInvitado(userId, idAddon)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "No te han invitado a este proyecto"));
         }
 
         addonService.actualizarStatusCreadorAddon(userId, idAddon, "rechazado");
 
         return ResponseEntity.ok(Map.of("exito", "Has rechazado la invitacion al proyecto"));
     }
-
 
     @GetMapping("mis-creaciones")
     public ResponseEntity<?> getMisCreaciones(
@@ -216,11 +281,11 @@ public class AddonController {
         if (!creadorService.creadorExiste(userId)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "No eres un Creador"));
         }
-    
+
         return ResponseEntity.ok(addonService.getAddonsDeCreador(userId));
     }
 
-        @GetMapping("mis-invitaciones")
+    @GetMapping("mis-invitaciones")
     public ResponseEntity<?> getMisInvitaciones(
             @RequestHeader(name = "Authorization", required = false) String authHeader) {
 
@@ -232,8 +297,7 @@ public class AddonController {
 
         if (!creadorService.creadorExiste(userId)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "No eres un Creador"));
-      }
+        }
         return ResponseEntity.ok(addonService.getAddonsDeCreadorPendiente(userId));
     }
- 
 }
