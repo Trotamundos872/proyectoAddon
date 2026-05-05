@@ -26,6 +26,9 @@ public class UsuarioService {
 
 
     public Usuario createUsuario(Usuario usuario) {
+        if (usuarioRepository.existsByEmail(usuario.getEmail())) {
+            throw new RuntimeException("El email ya está registrado");
+        }
         String contrseniaPlana = usuario.getPassword();
         usuario.setPassword(passwordEncoder.encode(contrseniaPlana));
         return usuarioRepository.save(usuario); 
@@ -49,26 +52,16 @@ public class UsuarioService {
     public Usuario guardarUsuario(Usuario usuario) {
         return usuarioRepository.save(usuario);
     }
-     public Long devolverUsuarioPorCorreo(String correo) {
-        Long id = null;
-        for (Usuario userAct : this.getAllUsuarios()) {
-            if (userAct.getEmail().equals(correo)) {
-                id = userAct.getId();
-            }
-        }
-        return id;
+    public Long devolverUsuarioPorCorreo(String correo) {
+        return usuarioRepository.findByEmail(correo)
+                .map(Usuario::getId)
+                .orElse(null);
     }
 
     public boolean verificarUsuario(Usuario user) {
-        boolean esVerficado = false;
-        for (Usuario userAct : this.getAllUsuarios()) {
-            if (user.getEmail().equals(userAct.getEmail())) {
-                if (passwordEncoder.matches(user.getPassword(), userAct.getPassword())) {
-                    esVerficado = true;
-                }
-            }
-        }
-        return esVerficado;
+        return usuarioRepository.findByEmail(user.getEmail())
+                .map(u -> passwordEncoder.matches(user.getPassword(), u.getPassword()))
+                .orElse(false);
     }
 
     public Integer totalUsuarios() {

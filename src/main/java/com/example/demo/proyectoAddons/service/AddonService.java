@@ -1,5 +1,6 @@
 package com.example.demo.proyectoAddons.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.proyectoAddons.model.Addon;
+import com.example.demo.proyectoAddons.model.Archivo;
 import com.example.demo.proyectoAddons.model.Creador;
 import com.example.demo.proyectoAddons.repository.AddonRepository;
 import com.example.demo.proyectoAddons.repository.ArchivoRepository;
@@ -40,6 +42,25 @@ public class AddonService {
             this.rellenarCreadoresAddon(addon);
         }
         return addon;
+    }
+
+    public Addon updateAddon(Long id, Addon addonContent) {
+        Addon addonExistente = addonRepository.findById(id).orElse(null);
+        if (addonExistente == null) return null;
+
+        addonExistente.setNombre(addonContent.getNombre());
+        addonExistente.setTipo(addonContent.getTipo());
+        addonExistente.setTag(addonContent.getTag());
+        addonExistente.setUrlMiniatura(addonContent.getUrlMiniatura());
+        addonExistente.setDescripcion(addonContent.getDescripcion());
+        addonExistente.setTextoAddon(addonContent.getTextoAddon());
+
+        return addonRepository.save(addonExistente);
+    }
+
+    public boolean esColaborador(Long userId, Long idAddon) {
+        String status = addonRepository.getStatusCreadorAddon(userId, idAddon);
+        return "colaborador".equalsIgnoreCase(status);
     }
 
     public List<Addon> getAlLAddons() {
@@ -106,14 +127,29 @@ public class AddonService {
                 });
             } else if ("reciente".equalsIgnoreCase(orden)) {
                 addonsSeleccionados.sort((a, b) -> {
-                    Long idA = a.getId() != null ? a.getId() : 0L;
-                    Long idB = b.getId() != null ? b.getId() : 0L;
-                    return idB.compareTo(idA); // Descendente
+                    LocalDateTime fechaA = obtenerFechaMasReciente(a);
+                    LocalDateTime fechaB = obtenerFechaMasReciente(b);
+                    return fechaB.compareTo(fechaA); // Descendente (más reciente primero)
                 });
             }
         }
 
         return addonsSeleccionados;
+    }
+
+    private LocalDateTime obtenerFechaMasReciente(Addon addon) {
+        List<Archivo> archivos = archivoRepository.findByAddonId(addon.getId());
+        if (archivos == null || archivos.isEmpty()) {
+            return LocalDateTime.MIN;
+        }
+        
+        LocalDateTime masReciente = LocalDateTime.MIN;
+        for (Archivo archivo : archivos) {
+            if (archivo.getFecha() != null && archivo.getFecha().isAfter(masReciente)) {
+                masReciente = archivo.getFecha();
+            }
+        }
+        return masReciente;
     }
 
     public boolean addonExiste(Long id) {
@@ -225,12 +261,8 @@ public class AddonService {
         List<Addon> listadEAddonsPropios = new ArrayList<>();
         for (Long addonid : addonRepository.getAddonsDeCreador(idCreador)) {
             addonRepository.findById(addonid).ifPresent(addon -> {
-                // Solo incluimos el addon si tiene al menos un archivo
-                List<?> archivos = archivoRepository.findByAddonId(addon.getId());
-                if (archivos != null && !archivos.isEmpty()) {
-                    this.rellenarCreadoresAddon(addon);
-                    listadEAddonsPropios.add(addon);
-                }
+                this.rellenarCreadoresAddon(addon);
+                listadEAddonsPropios.add(addon);
             });
         }
 

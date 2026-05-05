@@ -57,4 +57,10 @@ public class ArchivoController {
         
         return ResponseEntity.ok(archivos);
     }
+
+    @PostMapping("/descargar/{idArchivo}")
+    public ResponseEntity<?> registrarDescarga(@PathVariable Long idArchivo) {
+        archivoService.incrementarDescargas(idArchivo);
+        return ResponseEntity.ok(Map.of("mensaje", "Descarga registrada"));
+    }
 }

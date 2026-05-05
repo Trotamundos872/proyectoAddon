@@ -55,4 +55,13 @@ public class ArchivoService {
     public List<Archivo> getArchivosPorAddon(Long addonId) {
         return archivoRepository.findByAddonId(addonId);
     }
+
+    public void incrementarDescargas(Long archivoId) {
+        archivoRepository.findById(archivoId).ifPresent(archivo -> {
+            Integer descargas = archivo.getNumeroDescargas();
+            if (descargas == null) descargas = 0;
+            archivo.setNumeroDescargas(descargas + 1);
+            archivoRepository.save(archivo);
+        });
+    }
 }

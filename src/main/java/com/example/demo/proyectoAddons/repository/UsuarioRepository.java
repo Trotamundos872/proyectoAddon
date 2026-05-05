@@ -12,6 +12,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 @Query(value = "SELECT * FROM usuario WHERE usuario.es_pago = true",nativeQuery = true)
 List<Usuario> listaDePago();
 
+boolean existsByEmail(String email);
+
+java.util.Optional<Usuario> findByEmail(String email);
+
 
 
 

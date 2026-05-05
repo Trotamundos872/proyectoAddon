@@ -27,8 +27,13 @@ public class UsuarioController {
     private JWTService jwtService;
 
     @PostMapping
-    public Usuario createUsuario(@Valid @RequestBody Usuario codBar) {
-        return usuarioService.createUsuario(codBar);
+    public ResponseEntity<?> createUsuario(@Valid @RequestBody Usuario codBar) {
+        try {
+            Usuario nuevoUsuario = usuarioService.createUsuario(codBar);
+            return ResponseEntity.ok(nuevoUsuario);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", e.getMessage()));
+        }
     }
 
     @GetMapping("")
@@ -49,6 +54,7 @@ public class UsuarioController {
         boolean esCreador = creadorService.creadorExiste(userId);
         
         return ResponseEntity.ok(Map.of(
+            "id", userId,
             "nombre", user.getNombre(),
             "email", user.getEmail(),
             "esCreador", esCreador

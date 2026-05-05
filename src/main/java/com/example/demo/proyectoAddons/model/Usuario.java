@@ -50,10 +50,10 @@ public class Usuario {
     private String password;
 
     @Column(name = "es_pago", nullable = false)
-    private Boolean esDePago;
+    private Boolean esDePago = false;
 
     @Column(name = "deprecado", nullable = true)
-    private Boolean deprecado;
+    private Boolean deprecado = false;
 
     // Un usuario puede tener muchas subscripciones
     @OneToMany(mappedBy = "usuario")

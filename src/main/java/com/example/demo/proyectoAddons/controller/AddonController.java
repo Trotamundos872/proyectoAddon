@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -75,17 +76,40 @@ public class AddonController {
         return ResponseEntity.ok(addonCreado);
     }
 
+    @PutMapping("/{idAddon}")
+    public ResponseEntity<?> updateAddon(@RequestHeader(name = "Authorization", required = false) String authHeader,
+            @PathVariable Long idAddon, @Valid @RequestBody Addon addonContent) {
+
+        Long userId = jwtService.obtenerId(authHeader);
+
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Token inválido o expirado"));
+        }
+
+        if (!addonService.addonExiste(idAddon)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "No existe este Addon"));
+        }
+
+        if (!addonService.esCreadorOriginal(userId, idAddon) && !addonService.esColaborador(userId, idAddon)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "No tienes permisos para editar este Addon"));
+        }
+
+        Addon actualizado = addonService.updateAddon(idAddon, addonContent);
+        return ResponseEntity.ok(actualizado);
+    }
+
     @GetMapping
     public List<Addon> gettAllAddons() {
         return addonService.getAlLAddons();
     }
 
-    @GetMapping("{idAddon}")
+    @GetMapping("/{idAddon}")
     public Addon devolverAddon(@PathVariable Long idAddon) {
         return addonService.devolverAddon(idAddon);
     }
 
-    @GetMapping("buscar")
+    @GetMapping("/buscar")
     public List<Addon> buscarPorCoincidencia(
             @RequestParam(required = false) String buscar,
             @RequestParam(required = false) String orden,
@@ -93,12 +117,12 @@ public class AddonController {
         return addonService.buscarPorCoincidencia(buscar, orden, categoria);
     }
 
-    @GetMapping("creadores/{idAddon}")
+    @GetMapping("/creadores/{idAddon}")
     public List<String> getCreadorNombreDeUnAddon(@PathVariable Long idAddon) {
         return addonService.getCreadorNombreDeUnAddon(idAddon);
     }
 
-    @PostMapping("darlike/{idAddon}")
+    @PostMapping("/darlike/{idAddon}")
     public ResponseEntity<?> darLike(@RequestHeader(name = "Authorization", required = false) String authHeader,
             @PathVariable Long idAddon) {
 
@@ -131,7 +155,7 @@ public class AddonController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Error procesando el like"));
     }
 
-    @GetMapping("darlike/comprobar/{idAddon}")
+    @GetMapping("/darlike/comprobar/{idAddon}")
     public ResponseEntity<?> comprobarLike(@RequestHeader(name = "Authorization", required = false) String authHeader,
             @PathVariable Long idAddon) {
 
@@ -152,7 +176,7 @@ public class AddonController {
         ));
     }
 
-    @GetMapping("invitar/enviar/{idAddon}/{idCreador}")
+    @GetMapping("/invitar/enviar/{idAddon}/{idCreador}")
     public ResponseEntity<?> invitarCreador(@RequestHeader(name = "Authorization", required = false) String authHeader,
             @PathVariable Long idAddon, @PathVariable Long idCreador) {
         Long userId = jwtService.obtenerId(authHeader);
@@ -186,7 +210,7 @@ public class AddonController {
         return ResponseEntity.ok(Map.of("exito", "creador invitado al proyecto"));
     }
 
-    @GetMapping("invitar/bloquear/{idAddon}/{idCreador}")
+    @GetMapping("/invitar/bloquear/{idAddon}/{idCreador}")
     public ResponseEntity<?> bloquearCreador(@RequestHeader(name = "Authorization", required = false) String authHeader,
             @PathVariable Long idAddon, @PathVariable Long idCreador) {
         Long userId = jwtService.obtenerId(authHeader);
@@ -220,7 +244,7 @@ public class AddonController {
         return ResponseEntity.ok(Map.of("exito", "has bloqueado al creador"));
     }
 
-    @GetMapping("invitar/aceptar/{idAddon}")
+    @GetMapping("/invitar/aceptar/{idAddon}")
     public ResponseEntity<?> aceptarInvitacion(
             @RequestHeader(name = "Authorization", required = false) String authHeader,
             @PathVariable Long idAddon) {
@@ -244,7 +268,7 @@ public class AddonController {
         return ResponseEntity.ok(Map.of("exito", "Has aceptado la invitacion al proyecto"));
     }
 
-    @GetMapping("invitar/rechazar/{idAddon}")
+    @GetMapping("/invitar/rechazar/{idAddon}")
     public ResponseEntity<?> rechazarInvitacion(
             @RequestHeader(name = "Authorization", required = false) String authHeader,
             @PathVariable Long idAddon) {
@@ -268,7 +292,7 @@ public class AddonController {
         return ResponseEntity.ok(Map.of("exito", "Has rechazado la invitacion al proyecto"));
     }
 
-    @GetMapping("mis-creaciones")
+    @GetMapping("/mis-creaciones")
     public ResponseEntity<?> getMisCreaciones(
             @RequestHeader(name = "Authorization", required = false) String authHeader) {
 
@@ -285,7 +309,7 @@ public class AddonController {
         return ResponseEntity.ok(addonService.getAddonsDeCreador(userId));
     }
 
-    @GetMapping("mis-invitaciones")
+    @GetMapping("/mis-invitaciones")
     public ResponseEntity<?> getMisInvitaciones(
             @RequestHeader(name = "Authorization", required = false) String authHeader) {
 

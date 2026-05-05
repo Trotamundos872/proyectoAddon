@@ -147,4 +147,14 @@ public class CreadorController {
 
         return ResponseEntity.ok(addonService.getAddonsDeCreador(creadorid));
     }
+
+    @GetMapping("/todos")
+    public ResponseEntity<?> getAllCreadores() {
+        return ResponseEntity.ok(creadorService.getAll());
+    }
+
+    @GetMapping("/ranking")
+    public ResponseEntity<?> getRanking() {
+        return ResponseEntity.ok(creadorService.getRanking());
+    }
 }
