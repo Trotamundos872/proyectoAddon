@@ -1,16 +1,21 @@
 package com.example.demo.proyectoAddons.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.proyectoAddons.model.Usuario;
 import com.example.demo.proyectoAddons.service.CreadorService;
 import com.example.demo.proyectoAddons.service.JWTService;
 import com.example.demo.proyectoAddons.service.UsuarioService;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -39,6 +44,10 @@ public class AuthController {
 
         Usuario userVerificado = usuarioService
                 .devolverUsuario(usuarioService.devolverUsuarioPorCorreo(req.getEmail()));
+
+        if (userVerificado.getDeprecado() != null && userVerificado.getDeprecado()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Esta cuenta ha sido deshabilitada por administración"));
+        }
 
         Long usuarioId = userVerificado.getId();
         String username = userVerificado.getNombre();

@@ -53,7 +53,9 @@ public class ArchivoService {
     }
 
     public List<Archivo> getArchivosPorAddon(Long addonId) {
-        return archivoRepository.findByAddonId(addonId);
+        List<Archivo> todos = archivoRepository.findByAddonId(addonId);
+        // Solo devolvemos los archivos que están marcados como disponibles (no bloqueados)
+        return todos.stream().filter(Archivo::isDisponible).toList();
     }
 
     public void incrementarDescargas(Long archivoId) {

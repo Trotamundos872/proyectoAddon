@@ -119,10 +119,10 @@ public class CreadorController {
         return ResponseEntity.ok(Map.of("exito", "Perfil actualizado correctamente"));
     }
 
-    @PutMapping("modificar/espacialidad")
+    @PutMapping("modificar/especialidad")
     public ResponseEntity<?> modificarESpecialidad(
             @RequestHeader(name = "Authorization", required = false) String authHeader,
-            @Valid @RequestBody String espacialiadNueva) {
+            @RequestBody Map<String, String> body) {
         Long userId = jwtService.obtenerId(authHeader);
 
         if (userId == null) {
@@ -133,9 +133,15 @@ public class CreadorController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "No eres un Creador"));
         }
 
-        creadorService.modificarEspecialidad(userId, espacialiadNueva);
+        String especialidadNueva = body.get("especialidad");
+        if (especialidadNueva == null || especialidadNueva.trim().isEmpty() || especialidadNueva.trim().length() > 60) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", "La especialidad es obligatoria y no puede superar los 60 caracteres"));
+        }
 
-        return ResponseEntity.ok("Se ha modificado su especialidad");
+        creadorService.modificarEspecialidad(userId, especialidadNueva.trim());
+
+        return ResponseEntity.ok(Map.of("exito", "Se ha modificado su especialidad"));
     }
 
     @GetMapping("{creadorid}/creaciones")

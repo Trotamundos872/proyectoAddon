@@ -34,7 +34,7 @@ public class ArchivoController {
 
         // Limpiar campos sensibles
         archivo.setMotivoRechazo("");
-        archivo.setDisponible(false);
+        archivo.setDisponible(true);
 
         Archivo guardado = archivoService.guardarArchivo(archivo, idAddon, userId);
         if (guardado == null) {
@@ -51,7 +51,7 @@ public class ArchivoController {
         
         // Formatear la URL para el frontend
         for (Archivo archivo : archivos) {
-            String uuidUrl = archivo.getUrl();
+            String uuidUrl = archivo.getUrl().replaceAll("\\s+", "_");
             archivo.setUrl("https://www.trmc-addons.com/tfg-media/" + uuidUrl);
         }
         

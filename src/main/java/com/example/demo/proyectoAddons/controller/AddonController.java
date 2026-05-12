@@ -43,6 +43,11 @@ public class AddonController {
         this.usuarioService = usuarioService;
     }
 
+    @GetMapping("/creadores-full/{idAddon}")
+    public ResponseEntity<?> getCreadoresFullDeUnAddon(@PathVariable Long idAddon) {
+        return ResponseEntity.ok(addonService.getCreadoresFullDeUnAddon(idAddon));
+    }
+
     @GetMapping("/perfil/{idcreador}")
     public ResponseEntity<?> getMisCreacionesdeCreador(@PathVariable Long idcreador) {
 

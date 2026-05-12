@@ -43,7 +43,7 @@ public class Archivo {
     private String tipo;
 
     @Column(name = "disponible", nullable = false)
-    private boolean disponible = false;
+    private boolean disponible = true;
 
     @Column(name = "motivo_rechazo")
     private String motivoRechazo;

@@ -2,7 +2,9 @@ package com.example.demo.proyectoAddons.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +70,11 @@ public class AddonService {
         List<Addon> filtrados = new ArrayList<>();
         
         for (Addon addon : addons) {
+            // Solo incluimos el addon si NO está deprecado
+            if (addon.getDeprecado() != null && addon.getDeprecado()) {
+                continue;
+            }
+
             // Solo incluimos el addon si tiene al menos un archivo
             List<?> archivos = archivoRepository.findByAddonId(addon.getId());
             if (archivos != null && !archivos.isEmpty()) {
@@ -276,5 +283,27 @@ public class AddonService {
         }
 
         return listadEAddonsPropios;
+    }
+
+    public List<Map<String, Object>> getCreadoresFullDeUnAddon(Long idAddon) {
+        List<Map<String, Object>> result = new ArrayList<>();
+        Optional<Addon> addonOpt = addonRepository.findById(idAddon);
+        if (addonOpt.isPresent()) {
+            Addon addon = addonOpt.get();
+            // Suponiendo que hay una relación o consulta para obtener los colaboradores
+            // Vamos a usar una consulta directa al repositorio para obtener los status
+            List<Creador> todosLosCreadores = creadorRepository.findAll();
+            for (Creador c : todosLosCreadores) {
+                String status = addonRepository.getStatusCreadorAddon(c.getId(), idAddon);
+                if (status != null) {
+                    Map<String, Object> cData = new HashMap<>();
+                    cData.put("id", c.getId());
+                    cData.put("nombre", c.getUsuario().getNombre());
+                    cData.put("status", status);
+                    result.add(cData);
+                }
+            }
+        }
+        return result;
     }
 }

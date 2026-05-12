@@ -85,6 +85,18 @@ public class CreadorService {
         return ranking;
     }
 
+    @Transactional
+    public void actualizarPerfil(Long id, String nombre, String especialidad) {
+        Creador creador = creadorRepository.findById(id).orElse(null);
+        if (creador != null) {
+            creador.setEspecialidad(especialidad);
+            if (creador.getUsuario() != null) {
+                creador.getUsuario().setNombre(nombre);
+            }
+            creadorRepository.save(creador);
+        }
+    }
+
     public List<Creador> getAll() {
         return creadorRepository.findAll();
     }

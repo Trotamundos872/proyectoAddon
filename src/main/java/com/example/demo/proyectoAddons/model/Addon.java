@@ -62,6 +62,9 @@ public class Addon {
     @Column(name = "likes")
     private Integer likes = 0;
 
+    @Column(name = "deprecado", nullable = true)
+    private Boolean deprecado = false;
+
     @OneToMany(mappedBy = "addon")
     private List<CreadorAddon> creadorAddons;
 

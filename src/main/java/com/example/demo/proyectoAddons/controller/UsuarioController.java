@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.demo.proyectoAddons.model.Usuario;
 import com.example.demo.proyectoAddons.service.JWTService;
 import com.example.demo.proyectoAddons.service.CreadorService;
+import com.example.demo.proyectoAddons.service.AdministradorService;
 import com.example.demo.proyectoAddons.service.UsuarioService;
 
 import jakarta.validation.Valid;
@@ -22,6 +23,9 @@ public class UsuarioController {
 
     @Autowired
     private CreadorService creadorService;
+
+    @Autowired
+    private AdministradorService administradorService;
 
     @Autowired
     private JWTService jwtService;
@@ -45,28 +49,28 @@ public class UsuarioController {
         if (userId == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Token inválido o expirado"));
         }
-        
+
         Usuario user = usuarioService.devolverUsuario(userId);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Usuario no encontrado"));
         }
 
         boolean esCreador = creadorService.creadorExiste(userId);
-        
+        boolean esAdmin = administradorService.adminsitradorExiste(userId);
+
         return ResponseEntity.ok(Map.of(
-            "id", userId,
-            "nombre", user.getNombre(),
-            "email", user.getEmail(),
-            "esCreador", esCreador
-        ));
+                "id", userId,
+                "nombre", user.getNombre(),
+                "email", user.getEmail(),
+                "esCreador", esCreador,
+                "esAdmin", esAdmin));
     }
 
-    //cualquier usuario puede ver si otro usuario existe
+    // cualquier usuario puede ver si otro usuario existe
     @GetMapping("/{id}")
     public boolean usuarioExiste(@PathVariable Long id) {
         return usuarioService.usuarioExiste(id);
     }
-
 
     @GetMapping("/totalusuarios")
     public Integer depago() {
