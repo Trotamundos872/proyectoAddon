@@ -1,5 +1,6 @@
 package com.example.demo.proyectoAddons.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/archivos")
 public class ArchivoController {
+
+    @Value("${app.media.base-url}")
+    private String mediaBaseUrl;
 
     @Autowired
     private ArchivoService archivoService;
@@ -52,7 +56,7 @@ public class ArchivoController {
         // Formatear la URL para el frontend
         for (Archivo archivo : archivos) {
             String uuidUrl = archivo.getUrl().replaceAll("\\s+", "_");
-            archivo.setUrl("https://www.trmc-addons.com/tfg-media/" + uuidUrl);
+            archivo.setUrl(buildMediaUrl(uuidUrl));
         }
         
         return ResponseEntity.ok(archivos);
@@ -62,5 +66,12 @@ public class ArchivoController {
     public ResponseEntity<?> registrarDescarga(@PathVariable Long idArchivo) {
         archivoService.incrementarDescargas(idArchivo);
         return ResponseEntity.ok(Map.of("mensaje", "Descarga registrada"));
+    }
+
+    private String buildMediaUrl(String uuidUrl) {
+        String normalizedMediaBaseUrl = mediaBaseUrl.endsWith("/")
+                ? mediaBaseUrl.substring(0, mediaBaseUrl.length() - 1)
+                : mediaBaseUrl;
+        return normalizedMediaBaseUrl + "/" + uuidUrl;
     }
 }

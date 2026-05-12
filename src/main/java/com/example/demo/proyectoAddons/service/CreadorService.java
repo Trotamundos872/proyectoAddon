@@ -47,8 +47,8 @@ public class CreadorService {
 
             if (creador.getCreadorAddons() != null) {
                 for (CreadorAddon rel : creador.getCreadorAddons()) {
-                    // Filtramos por estado aceptado u original
-                    if ("colaborador".equals(rel.getStatus()) || "original".equals(rel.getStatus()) || rel.getStatus() == null) {
+                    // Contamos add-ons del creador original y de colaboradores aceptados.
+                    if (esRelacionActiva(rel.getStatus())) {
                         Addon addon = rel.getAddon();
                         if (addon != null) {
                             List<Archivo> archivos = archivoRepository.findByAddonId(addon.getId());
@@ -83,6 +83,13 @@ public class CreadorService {
         ranking.sort((a, b) -> Long.compare((long) b.get("totalDescargas"), (long) a.get("totalDescargas")));
 
         return ranking;
+    }
+
+    private boolean esRelacionActiva(String status) {
+        return status == null
+                || "creador".equalsIgnoreCase(status)
+                || "original".equalsIgnoreCase(status)
+                || "colaborador".equalsIgnoreCase(status);
     }
 
     @Transactional

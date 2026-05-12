@@ -16,6 +16,9 @@ import com.example.demo.proyectoAddons.model.Usuario;
 import com.example.demo.proyectoAddons.service.CreadorService;
 import com.example.demo.proyectoAddons.service.JWTService;
 import com.example.demo.proyectoAddons.service.UsuarioService;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import java.time.LocalDateTime;
+import java.util.Random;
 
 @RestController
 @RequestMapping("/auth")
@@ -26,6 +29,9 @@ public class AuthController {
 
     @Autowired
     private CreadorService creadorService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     private final JWTService jwtService;
 
@@ -103,5 +109,59 @@ public class AuthController {
         String nuevaToken = jwtService.generarToken(usuario, usuarioId);
 
         return ResponseEntity.ok(Map.of("token", nuevaToken));
+    }
+
+    // Endpoint para solicitar la recuperación de contraseña
+    @PostMapping("/solicitar-recuperacion")
+    public ResponseEntity<?> solicitarRecuperacion(@RequestBody Map<String, String> req) {
+        String email = req.get("email");
+        Long userId = usuarioService.devolverUsuarioPorCorreo(email);
+
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Email no encontrado"));
+        }
+
+        Usuario user = usuarioService.devolverUsuario(userId);
+        
+        // Generar código de 6 dígitos
+        String codigo = String.format("%06d", new Random().nextInt(999999));
+        user.setCodigoRecuperacion(codigo);
+        user.setExpiracionCodigo(LocalDateTime.now().plusMinutes(15));
+        
+        usuarioService.guardarUsuario(user);
+
+        return ResponseEntity.ok(Map.of("mensaje", "Código generado correctamente", "codigo", codigo));
+    }
+
+    // Endpoint para resetear la contraseña
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> req) {
+        String email = req.get("email");
+        String codigo = req.get("codigo");
+        String nuevaPassword = req.get("nuevaPassword");
+
+        Long userId = usuarioService.devolverUsuarioPorCorreo(email);
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Email no encontrado"));
+        }
+
+        Usuario user = usuarioService.devolverUsuario(userId);
+
+        if (user.getCodigoRecuperacion() == null || !user.getCodigoRecuperacion().equals(codigo)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Código incorrecto"));
+        }
+
+        if (user.getExpiracionCodigo() == null || user.getExpiracionCodigo().isBefore(LocalDateTime.now())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "El código ha expirado"));
+        }
+
+        // Actualizar contraseña
+        user.setPassword(passwordEncoder.encode(nuevaPassword));
+        user.setCodigoRecuperacion(null);
+        user.setExpiracionCodigo(null);
+        
+        usuarioService.guardarUsuario(user);
+
+        return ResponseEntity.ok(Map.of("mensaje", "Contraseña actualizada correctamente"));
     }
 }

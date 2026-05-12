@@ -55,6 +55,12 @@ public class Usuario {
     @Column(name = "deprecado", nullable = true)
     private Boolean deprecado = false;
 
+    @Column(name = "codigo_recuperacion", nullable = true)
+    private String codigoRecuperacion;
+
+    @Column(name = "expiracion_codigo", nullable = true)
+    private java.time.LocalDateTime expiracionCodigo;
+
     // Un usuario puede tener muchas subscripciones
     @OneToMany(mappedBy = "usuario")
     @JsonManagedReference(value = "usuario-subs")
