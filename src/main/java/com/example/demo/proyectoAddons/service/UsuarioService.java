@@ -1,6 +1,7 @@
 package com.example.demo.proyectoAddons.service;
 
 import com.example.demo.proyectoAddons.model.Usuario;
+import com.example.demo.proyectoAddons.repository.AdministradorRepository;
 import com.example.demo.proyectoAddons.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,9 +19,13 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository; 
 
-    public UsuarioService(PasswordEncoder passwordEncoder, UsuarioRepository usuarioRepository) {
+    @Autowired
+    private AdministradorRepository administradorRepository;
+
+    public UsuarioService(PasswordEncoder passwordEncoder, UsuarioRepository usuarioRepository, AdministradorRepository administradorRepository) {
         this.passwordEncoder = passwordEncoder;
         this.usuarioRepository = usuarioRepository;
+        this.administradorRepository = administradorRepository;
     }
 
 
@@ -66,6 +71,10 @@ public class UsuarioService {
 
     public Integer totalUsuarios() {
         return Math.toIntExact(usuarioRepository.count());
+    }
+
+    public boolean esAdmin(Long id) {
+        return administradorRepository.existsById(id);
     }
 
 }
