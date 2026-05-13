@@ -1,9 +1,15 @@
 package com.example.demo.proyectoAddons.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.transaction.annotation.Transactional;
 import com.example.demo.proyectoAddons.model.Archivo;
 import java.util.List;
 
 public interface ArchivoRepository extends JpaRepository<Archivo, Long> {
     List<Archivo> findByAddonId(Long addonId);
+
+    @Modifying
+    @Transactional
+    void deleteByAddonId(Long addonId);
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.proyectoAddons.model.Addon;
 import com.example.demo.proyectoAddons.model.UsuarioLike;
 import com.example.demo.proyectoAddons.repository.UsuarioLikeRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.validation.Valid;
 
@@ -42,5 +43,9 @@ public class UsuarioLikeService {
         return usuarioLikeRepository.getSiDarLike(idUser, idAddon) > 0;
     }
 
+    @Transactional
+    public void eliminarLikesDeAddon(Long idAddon) {
+        usuarioLikeRepository.deleteByAddonId(idAddon);
+    }
 
 }

@@ -398,6 +398,156 @@ public class DataInitializer implements CommandLineRunner {
 
             addonRepository.insertarCreadorAddon(adminUsuario.getId(), customPlayerHeads.getId(), "aceptado");
 
+
+
+
+
+
+            
+            
+            Addon sleepingBags = new Addon();
+            sleepingBags.setNombre("Sleeping Bags");
+            sleepingBags.setTipo("skin");
+            sleepingBags.setTag("Decoracion");
+            sleepingBags.setUrlMiniatura("https://www.trmc-addons.com/add-ons/sleeping-bags/thumbnail.webp");
+            sleepingBags.setDescripcion("Sleeping Bags is an add-on that adds functional sleeping bags for Minecraft Bedrock.");
+            sleepingBags.setTextoAddon("Placing player heads in Minecraft is essential, and currently there is no native function in Minecraft Bedrock to do so. This tool solves that! Custom Player Heads is an online program for generating player heads!\r\n" + //
+                                "\r\n" + //
+                                "[![alt text](https://www.trmc-addons.com/add-ons/custom-player-heads/images/title.webp)](https://www.trmc-addons.com/cph)\r\n" + //
+                                "\r\n" + //
+                                "<h2 style=\"text-align:center\">[![](https://www.trmc-addons.com/add-ons/custom-paintings/images/customize.webp)](https://www.trmc-addons.com/cph)</h2><h2 style=\"text-align:center\">Main Features:</h2>\r\n" + //
+                                "\r\n" + //
+                                "**Player Heads in Minecraft:** Player heads are a very popular item in the Java Edition of Minecraft. They are widely used for roleplay, trophies, decoration, and many creative purposes.\r\n" + //
+                                "\r\n" + //
+                                "**Decoration Options:** Custom head skins allow you to simulate many objects such as portals, mini blocks, books, food, and much more, making them perfect for detailed builds and creative designs.\r\n" + //
+                                "\r\n" + //
+                                "**Put it on your head:** Imported heads can be equipped on your head, working exactly like a vanilla item.\r\n" + //
+                                "\r\n" + //
+                                "You can preview how the head block will look below everything in the online editor.\r\n" + //
+                                "\r\n" + //
+                                "## Images\r\n" + //
+                                "\r\n" + //
+                                "![](https://www.trmc-addons.com/add-ons/custom-player-heads/images/2.webp)\r\n" + //
+                                "\r\n" + //
+                                "![](https://www.trmc-addons.com/add-ons/custom-player-heads/images/1.webp)\r\n" + //
+                                "\r\n" + //
+                                "![](https://www.trmc-addons.com/add-ons/custom-player-heads/images/3.webp)\r\n" + //
+                                "\r\n" + //
+                                "## Crafting\r\n" + //
+                                "\r\n" + //
+                                "All generated heads will only be available if you place a soul sand block in the stonecutter.\r\n" + //
+                                "\r\n" + //
+                                " \r\n" + //
+                                "\r\n" + //
+                                "## 🔴  IMPORTANT | TUTORIAL: Using the Editor  🔴\r\n" + //
+                                "\r\n" + //
+                                " \r\n" + //
+                                "\r\n" + //
+                                "To get your add-on, follow these steps in our web editor: [https://www.trmc-addons.com/cph](https://www.trmc-addons.com/cph)\r\n" + //
+                                "\r\n" + //
+                                "1.  Upload Skins: Upload the Minecraft head skins you need.\r\n" + //
+                                "    \r\n" + //
+                                "2.  Add Heads: Once all the head skins are uploaded, make sure everything is ready.\r\n" + //
+                                "    \r\n" + //
+                                "3.  Export: Click \"Export Addon\" to generate your file.\r\n" + //
+                                "    \r\n" + //
+                                "4.  Download & Use: A .mcaddon file will be downloaded. Run it to install and use your custom player heads in Minecraft.\r\n" + //
+                                "    \r\n" + //
+                                "\r\n" + //
+                                "![](https://www.trmc-addons.com/add-ons/custom-player-heads/images/Video Project 2.gif)\r\n" + //
+                                "\r\n" + //
+                                "# Downloads | Official Site\r\n" + //
+                                "\r\n" + //
+                                "*   [Download Custom Player Heads](https://www.trmc-addons.com/cph)\r\n" + //
+                                "\r\n" + //
+                                "undefined");
+
+            addonRepository.save(sleepingBags);
+
+            Archivo sleepingBagsFile = new Archivo();
+            sleepingBagsFile.setNombreMostrado("Sleeping Bags");
+            sleepingBagsFile.setUrl("3dc8c67e-5ea0-4e23-a099-4f94974266b5_PHYSICS_GLUE_v0.3.mcaddon");
+            sleepingBagsFile.setVersionJuego("1.18+");
+            sleepingBagsFile.setVersionAddon("v0.21");
+            sleepingBagsFile.setTipo("mcaddon");
+            sleepingBagsFile.setDisponible(true);
+            sleepingBagsFile.setAddon(sleepingBags);
+            archivoRepository.save(sleepingBagsFile);
+
+            addonRepository.insertarCreadorAddon(adminUsuario.getId(), sleepingBags.getId(), "aceptado");
+
+            Addon medievalStructures = new Addon();
+            medievalStructures.setNombre("Medieval Structures");
+            medievalStructures.setTipo("mapas");
+            medievalStructures.setTag("pvp");
+            medievalStructures.setUrlMiniatura("https://www.trmc-addons.com/add-ons/medieval-structures/thumbnail.webp");
+            medievalStructures.setDescripcion("Medieval Structures is a Minecraft Bedrock add-on that adds dozens of new medieval structures to your world, powered by our own Feudal Furniture add-on!");
+            medievalStructures.setTextoAddon("Placing player heads in Minecraft is essential, and currently there is no native function in Minecraft Bedrock to do so. This tool solves that! Custom Player Heads is an online program for generating player heads!\r\n" + //
+                                "\r\n" + //
+                                "[![alt text](https://www.trmc-addons.com/add-ons/custom-player-heads/images/title.webp)](https://www.trmc-addons.com/cph)\r\n" + //
+                                "\r\n" + //
+                                "<h2 style=\"text-align:center\">[![](https://www.trmc-addons.com/add-ons/custom-paintings/images/customize.webp)](https://www.trmc-addons.com/cph)</h2><h2 style=\"text-align:center\">Main Features:</h2>\r\n" + //
+                                "\r\n" + //
+                                "**Player Heads in Minecraft:** Player heads are a very popular item in the Java Edition of Minecraft. They are widely used for roleplay, trophies, decoration, and many creative purposes.\r\n" + //
+                                "\r\n" + //
+                                "**Decoration Options:** Custom head skins allow you to simulate many objects such as portals, mini blocks, books, food, and much more, making them perfect for detailed builds and creative designs.\r\n" + //
+                                "\r\n" + //
+                                "**Put it on your head:** Imported heads can be equipped on your head, working exactly like a vanilla item.\r\n" + //
+                                "\r\n" + //
+                                "You can preview how the head block will look below everything in the online editor.\r\n" + //
+                                "\r\n" + //
+                                "## Images\r\n" + //
+                                "\r\n" + //
+                                "![](https://www.trmc-addons.com/add-ons/custom-player-heads/images/2.webp)\r\n" + //
+                                "\r\n" + //
+                                "![](https://www.trmc-addons.com/add-ons/custom-player-heads/images/1.webp)\r\n" + //
+                                "\r\n" + //
+                                "![](https://www.trmc-addons.com/add-ons/custom-player-heads/images/3.webp)\r\n" + //
+                                "\r\n" + //
+                                "## Crafting\r\n" + //
+                                "\r\n" + //
+                                "All generated heads will only be available if you place a soul sand block in the stonecutter.\r\n" + //
+                                "\r\n" + //
+                                " \r\n" + //
+                                "\r\n" + //
+                                "## 🔴  IMPORTANT | TUTORIAL: Using the Editor  🔴\r\n" + //
+                                "\r\n" + //
+                                " \r\n" + //
+                                "\r\n" + //
+                                "To get your add-on, follow these steps in our web editor: [https://www.trmc-addons.com/cph](https://www.trmc-addons.com/cph)\r\n" + //
+                                "\r\n" + //
+                                "1.  Upload Skins: Upload the Minecraft head skins you need.\r\n" + //
+                                "    \r\n" + //
+                                "2.  Add Heads: Once all the head skins are uploaded, make sure everything is ready.\r\n" + //
+                                "    \r\n" + //
+                                "3.  Export: Click \"Export Addon\" to generate your file.\r\n" + //
+                                "    \r\n" + //
+                                "4.  Download & Use: A .mcaddon file will be downloaded. Run it to install and use your custom player heads in Minecraft.\r\n" + //
+                                "    \r\n" + //
+                                "\r\n" + //
+                                "![](https://www.trmc-addons.com/add-ons/custom-player-heads/images/Video Project 2.gif)\r\n" + //
+                                "\r\n" + //
+                                "# Downloads | Official Site\r\n" + //
+                                "\r\n" + //
+                                "*   [Download Custom Player Heads](https://www.trmc-addons.com/cph)\r\n" + //
+                                "\r\n" + //
+                                "undefined");
+
+            addonRepository.save(medievalStructures);
+
+            Archivo medievalStructuresFile = new Archivo();
+            medievalStructuresFile.setNombreMostrado("Medieval Structures Plus");
+            medievalStructuresFile.setUrl("3dc8c67e-5ea0-4e23-a099-4f94974266b5_PHYSICS_GLUE_v0.3.mcaddon");
+            medievalStructuresFile.setVersionJuego("1.14+");
+            medievalStructuresFile.setVersionAddon("v0.21");
+            medievalStructuresFile.setTipo("mcaddon");
+            medievalStructuresFile.setDisponible(true);
+            medievalStructuresFile.setAddon(medievalStructures);
+            archivoRepository.save(medievalStructuresFile);
+
+            addonRepository.insertarCreadorAddon(adminUsuario.getId(), medievalStructures.getId(), "aceptado");
+
+
         }
     }
 }

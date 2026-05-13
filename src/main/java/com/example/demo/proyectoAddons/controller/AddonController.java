@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -105,9 +106,10 @@ public class AddonController {
         return ResponseEntity.ok(actualizado);
     }
 
-    // Endpoint para deshabilitar un addon
-    @PutMapping("/{idAddon}/deshabilitar")
-    public ResponseEntity<?> disableAddon(@RequestHeader(name = "Authorization", required = false) String authHeader,
+    // Endpoint para eliminar un addon completamente
+    @PutMapping("/{idAddon}/eliminar")
+    @Transactional
+    public ResponseEntity<?> deleteAddon(@RequestHeader(name = "Authorization", required = false) String authHeader,
             @PathVariable Long idAddon) {
 
         Long userId = jwtService.obtenerId(authHeader);
@@ -120,23 +122,19 @@ public class AddonController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "No existe este Addon"));
         }
 
-        // Solo el creador original o un administrador pueden deshabilitar el addon
+        // Solo el creador original o un administrador pueden eliminar el addon
         if (!addonService.esCreadorOriginal(userId, idAddon) && !usuarioService.esAdmin(userId)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "No tienes permisos para deshabilitar este Addon"));
+                    .body(Map.of("error", "No tienes permisos para eliminar este Addon"));
         }
 
-        Addon addon = addonService.devolverAddon(idAddon);
-        addon.setDeprecado(true);
-        addonService.updateAddon(idAddon, addon);
-        
-        // Actualizar el status en la tabla intermedia a "deshabilitado" para todos los creadores asociados
-        List<Long> creadoresIds = addonRepository.getRelacionesPorAddon(idAddon);
-        for (Long cId : creadoresIds) {
-            addonRepository.actualizarStatusCreadorAddon(cId, idAddon, "deshabilitado");
+        try {
+            addonService.eliminarAddonCompleto(idAddon);
+            return ResponseEntity.ok(Map.of("mensaje", "Addon eliminado correctamente junto con todos sus archivos y relaciones"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Error al eliminar el addon: " + e.getMessage()));
         }
-
-        return ResponseEntity.ok(Map.of("mensaje", "Addon deshabilitado correctamente"));
     }
 
     @GetMapping

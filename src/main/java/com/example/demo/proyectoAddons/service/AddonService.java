@@ -48,16 +48,28 @@ public class AddonService {
 
     public Addon updateAddon(Long id, Addon addonContent) {
         Addon addonExistente = addonRepository.findById(id).orElse(null);
-        if (addonExistente == null) return null;
+        if (addonExistente != null) {
+            addonExistente.setNombre(addonContent.getNombre());
+            addonExistente.setDescripcion(addonContent.getDescripcion());
+            addonExistente.setTipo(addonContent.getTipo());
+            addonExistente.setTag(addonContent.getTag());
+            addonExistente.setUrlMiniatura(addonContent.getUrlMiniatura());
+            addonExistente.setTextoAddon(addonContent.getTextoAddon());
+            addonExistente.setDeprecado(addonContent.getDeprecado());
+            return addonRepository.save(addonExistente);
+        }
+        return null;
+    }
 
-        addonExistente.setNombre(addonContent.getNombre());
-        addonExistente.setTipo(addonContent.getTipo());
-        addonExistente.setTag(addonContent.getTag());
-        addonExistente.setUrlMiniatura(addonContent.getUrlMiniatura());
-        addonExistente.setDescripcion(addonContent.getDescripcion());
-        addonExistente.setTextoAddon(addonContent.getTextoAddon());
-
-        return addonRepository.save(addonExistente);
+    @Transactional
+    public void eliminarAddonCompleto(Long idAddon) {
+        archivoRepository.deleteByAddonId(idAddon);
+        List<Long> creadoresIds = addonRepository.getRelacionesPorAddon(idAddon);
+        for (Long cId : creadoresIds) {
+            addonRepository.deleteDatosDeCreadorAddon(cId, idAddon);
+        }
+        usuarioLikeService.eliminarLikesDeAddon(idAddon);
+        addonRepository.deleteById(idAddon);
     }
 
     public boolean esColaborador(Long userId, Long idAddon) {
@@ -96,7 +108,7 @@ public class AddonService {
         List<Addon> addonsSeleccionados = new ArrayList<>();
 
         for (Addon addonAct : todosLosAddons) {
-            // 1. Filtro por categoría (si se proporciona)
+            // Filtro por categoría, puede no pasarlo
             if (categoria != null && !categoria.isEmpty() && !"all".equalsIgnoreCase(categoria)) {
                 boolean matchesCategory = false;
                 if (addonAct.getTipo() != null && addonAct.getTipo().equalsIgnoreCase(categoria)) {
@@ -105,7 +117,7 @@ public class AddonService {
                 if (!matchesCategory) continue; // Si no coincide con la categoría, saltar al siguiente
             }
 
-            // 2. Filtro por texto de búsqueda
+            // Filtro por texto de búsqueda
             String searchLower = (texto != null) ? texto.toLowerCase() : "";
             if (searchLower.isEmpty() || 
                 (addonAct.getNombre() != null && addonAct.getNombre().toLowerCase().contains(searchLower))
@@ -119,7 +131,6 @@ public class AddonService {
 
 
         if (orden != null) {
-            // ... (resto del código de ordenación igual)
             if ("likes".equalsIgnoreCase(orden)) {
                 addonsSeleccionados.sort((a, b) -> {
                     int likesA = a.getLikes() != null ? a.getLikes() : 0;
@@ -289,9 +300,6 @@ public class AddonService {
         List<Map<String, Object>> result = new ArrayList<>();
         Optional<Addon> addonOpt = addonRepository.findById(idAddon);
         if (addonOpt.isPresent()) {
-            Addon addon = addonOpt.get();
-            // Suponiendo que hay una relación o consulta para obtener los colaboradores
-            // Vamos a usar una consulta directa al repositorio para obtener los status
             List<Creador> todosLosCreadores = creadorRepository.findAll();
             for (Creador c : todosLosCreadores) {
                 String status = addonRepository.getStatusCreadorAddon(c.getId(), idAddon);

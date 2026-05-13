@@ -71,6 +71,10 @@ public class SubscripcionService {
         return null;
     }
 
+    public long contarSeguidores(Long idCreador) {
+        return subscripcionRepository.countByCreadorId(idCreador);
+    }
+
     public void deleteSubscripcion(Long id) {
         subscripcionRepository.deleteById(id);
     }

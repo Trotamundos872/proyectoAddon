@@ -109,6 +109,15 @@ public class SubscripcionController {
         return ResponseEntity.ok(detalles);
     }
 
+    @GetMapping("/contar-seguidores/{idCreador}")
+    public ResponseEntity<?> contarSeguidores(@PathVariable Long idCreador) {
+        if (!creadorService.creadorExiste(idCreador)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Creador No Encontrado"));
+        }
+        long total = subsService.contarSeguidores(idCreador);
+        return ResponseEntity.ok(Map.of("total", total));
+    }
+
     @PutMapping("modificar/{idCreador}")
     public ResponseEntity<?> modificarNotificaciones(
             @RequestHeader(name = "Authorization", required = false) String authHeader, @PathVariable Long idCreador) {
