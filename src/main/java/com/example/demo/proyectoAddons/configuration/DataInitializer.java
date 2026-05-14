@@ -333,56 +333,56 @@ public class DataInitializer implements CommandLineRunner {
             customPlayerHeads.setTag("Decoracion");
             customPlayerHeads.setUrlMiniatura("https://www.trmc-addons.com/add-ons/custom-player-heads/thumbnail.webp");
             customPlayerHeads.setDescripcion("Placing player heads in Minecraft is essential, and currently there is no native function in Minecraft Bedrock to do so. This tool solves that! Custom Player Heads is an online program for generating player heads!");
-            customPlayerHeads.setTextoAddon("Placing player heads in Minecraft is essential, and currently there is no native function in Minecraft Bedrock to do so. This tool solves that! Custom Player Heads is an online program for generating player heads!\r\n" + //
-                                "\r\n" + //
-                                "[![alt text](https://www.trmc-addons.com/add-ons/custom-player-heads/images/title.webp)](https://www.trmc-addons.com/cph)\r\n" + //
-                                "\r\n" + //
-                                "<h2 style=\"text-align:center\">[![](https://www.trmc-addons.com/add-ons/custom-paintings/images/customize.webp)](https://www.trmc-addons.com/cph)</h2><h2 style=\"text-align:center\">Main Features:</h2>\r\n" + //
-                                "\r\n" + //
-                                "**Player Heads in Minecraft:** Player heads are a very popular item in the Java Edition of Minecraft. They are widely used for roleplay, trophies, decoration, and many creative purposes.\r\n" + //
-                                "\r\n" + //
-                                "**Decoration Options:** Custom head skins allow you to simulate many objects such as portals, mini blocks, books, food, and much more, making them perfect for detailed builds and creative designs.\r\n" + //
-                                "\r\n" + //
-                                "**Put it on your head:** Imported heads can be equipped on your head, working exactly like a vanilla item.\r\n" + //
-                                "\r\n" + //
-                                "You can preview how the head block will look below everything in the online editor.\r\n" + //
-                                "\r\n" + //
-                                "## Images\r\n" + //
-                                "\r\n" + //
-                                "![](https://www.trmc-addons.com/add-ons/custom-player-heads/images/2.webp)\r\n" + //
-                                "\r\n" + //
-                                "![](https://www.trmc-addons.com/add-ons/custom-player-heads/images/1.webp)\r\n" + //
-                                "\r\n" + //
-                                "![](https://www.trmc-addons.com/add-ons/custom-player-heads/images/3.webp)\r\n" + //
-                                "\r\n" + //
-                                "## Crafting\r\n" + //
-                                "\r\n" + //
-                                "All generated heads will only be available if you place a soul sand block in the stonecutter.\r\n" + //
-                                "\r\n" + //
-                                " \r\n" + //
-                                "\r\n" + //
-                                "## 🔴  IMPORTANT | TUTORIAL: Using the Editor  🔴\r\n" + //
-                                "\r\n" + //
-                                " \r\n" + //
-                                "\r\n" + //
-                                "To get your add-on, follow these steps in our web editor: [https://www.trmc-addons.com/cph](https://www.trmc-addons.com/cph)\r\n" + //
-                                "\r\n" + //
-                                "1.  Upload Skins: Upload the Minecraft head skins you need.\r\n" + //
-                                "    \r\n" + //
-                                "2.  Add Heads: Once all the head skins are uploaded, make sure everything is ready.\r\n" + //
-                                "    \r\n" + //
-                                "3.  Export: Click \"Export Addon\" to generate your file.\r\n" + //
-                                "    \r\n" + //
-                                "4.  Download & Use: A .mcaddon file will be downloaded. Run it to install and use your custom player heads in Minecraft.\r\n" + //
-                                "    \r\n" + //
-                                "\r\n" + //
-                                "![](https://www.trmc-addons.com/add-ons/custom-player-heads/images/Video Project 2.gif)\r\n" + //
-                                "\r\n" + //
-                                "# Downloads | Official Site\r\n" + //
-                                "\r\n" + //
-                                "*   [Download Custom Player Heads](https://www.trmc-addons.com/cph)\r\n" + //
-                                "\r\n" + //
-                                "undefined");
+            customPlayerHeads.setTextoAddon("""
+                                Placing player heads in Minecraft is essential, and currently there is no native function in Minecraft Bedrock to do so. This tool solves that! Custom Player Heads is an online program for generating player heads!
+                                
+                                [![alt text](https://www.trmc-addons.com/add-ons/custom-player-heads/images/title.webp)](https://www.trmc-addons.com/cph)
+                                
+                                <h2 style="text-align:center">[![](https://www.trmc-addons.com/add-ons/custom-paintings/images/customize.webp)](https://www.trmc-addons.com/cph)</h2><h2 style="text-align:center">Main Features:</h2>
+                                
+                                **Player Heads in Minecraft:** Player heads are a very popular item in the Java Edition of Minecraft. They are widely used for roleplay, trophies, decoration, and many creative purposes.
+                                
+                                **Decoration Options:** Custom head skins allow you to simulate many objects such as portals, mini blocks, books, food, and much more, making them perfect for detailed builds and creative designs.
+                                
+                                **Put it on your head:** Imported heads can be equipped on your head, working exactly like a vanilla item.
+                                
+                                You can preview how the head block will look below everything in the online editor.
+                                
+                                ## Images
+                                
+                                ![](https://www.trmc-addons.com/add-ons/custom-player-heads/images/2.webp)
+                                
+                                ![](https://www.trmc-addons.com/add-ons/custom-player-heads/images/1.webp)
+                                
+                                ![](https://www.trmc-addons.com/add-ons/custom-player-heads/images/3.webp)
+                                
+                                ## Crafting
+                                
+                                All generated heads will only be available if you place a soul sand block in the stonecutter.
+                                
+                                &nbsp;
+                                
+                                ## 🔴  IMPORTANT | TUTORIAL: Using the Editor  🔴
+                                
+                                &nbsp;
+                                
+                                To get your add-on, follow these steps in our web editor: [https://www.trmc-addons.com/cph](https://www.trmc-addons.com/cph)
+                                
+                                1.  Upload Skins: Upload the Minecraft head skins you need.
+                                    
+                                2.  Add Heads: Once all the head skins are uploaded, make sure everything is ready.
+                                    
+                                3.  Export: Click "Export Addon" to generate your file.
+                                    
+                                4.  Download & Use: A .mcaddon file will be downloaded. Run it to install and use your custom player heads in Minecraft.
+                                    
+                                
+                                ![](https://www.trmc-addons.com/add-ons/custom-player-heads/images/Video Project 2.gif)
+                                
+                                # Downloads | Official Site
+                                
+                                *   [Download Custom Player Heads](https://www.trmc-addons.com/cph)
+                                """);
 
             addonRepository.save(customPlayerHeads);
 
@@ -411,56 +411,35 @@ public class DataInitializer implements CommandLineRunner {
             sleepingBags.setTag("Decoracion");
             sleepingBags.setUrlMiniatura("https://www.trmc-addons.com/add-ons/sleeping-bags/thumbnail.webp");
             sleepingBags.setDescripcion("Sleeping Bags is an add-on that adds functional sleeping bags for Minecraft Bedrock.");
-            sleepingBags.setTextoAddon("Placing player heads in Minecraft is essential, and currently there is no native function in Minecraft Bedrock to do so. This tool solves that! Custom Player Heads is an online program for generating player heads!\r\n" + //
-                                "\r\n" + //
-                                "[![alt text](https://www.trmc-addons.com/add-ons/custom-player-heads/images/title.webp)](https://www.trmc-addons.com/cph)\r\n" + //
-                                "\r\n" + //
-                                "<h2 style=\"text-align:center\">[![](https://www.trmc-addons.com/add-ons/custom-paintings/images/customize.webp)](https://www.trmc-addons.com/cph)</h2><h2 style=\"text-align:center\">Main Features:</h2>\r\n" + //
-                                "\r\n" + //
-                                "**Player Heads in Minecraft:** Player heads are a very popular item in the Java Edition of Minecraft. They are widely used for roleplay, trophies, decoration, and many creative purposes.\r\n" + //
-                                "\r\n" + //
-                                "**Decoration Options:** Custom head skins allow you to simulate many objects such as portals, mini blocks, books, food, and much more, making them perfect for detailed builds and creative designs.\r\n" + //
-                                "\r\n" + //
-                                "**Put it on your head:** Imported heads can be equipped on your head, working exactly like a vanilla item.\r\n" + //
-                                "\r\n" + //
-                                "You can preview how the head block will look below everything in the online editor.\r\n" + //
-                                "\r\n" + //
-                                "## Images\r\n" + //
-                                "\r\n" + //
-                                "![](https://www.trmc-addons.com/add-ons/custom-player-heads/images/2.webp)\r\n" + //
-                                "\r\n" + //
-                                "![](https://www.trmc-addons.com/add-ons/custom-player-heads/images/1.webp)\r\n" + //
-                                "\r\n" + //
-                                "![](https://www.trmc-addons.com/add-ons/custom-player-heads/images/3.webp)\r\n" + //
-                                "\r\n" + //
-                                "## Crafting\r\n" + //
-                                "\r\n" + //
-                                "All generated heads will only be available if you place a soul sand block in the stonecutter.\r\n" + //
-                                "\r\n" + //
-                                " \r\n" + //
-                                "\r\n" + //
-                                "## 🔴  IMPORTANT | TUTORIAL: Using the Editor  🔴\r\n" + //
-                                "\r\n" + //
-                                " \r\n" + //
-                                "\r\n" + //
-                                "To get your add-on, follow these steps in our web editor: [https://www.trmc-addons.com/cph](https://www.trmc-addons.com/cph)\r\n" + //
-                                "\r\n" + //
-                                "1.  Upload Skins: Upload the Minecraft head skins you need.\r\n" + //
-                                "    \r\n" + //
-                                "2.  Add Heads: Once all the head skins are uploaded, make sure everything is ready.\r\n" + //
-                                "    \r\n" + //
-                                "3.  Export: Click \"Export Addon\" to generate your file.\r\n" + //
-                                "    \r\n" + //
-                                "4.  Download & Use: A .mcaddon file will be downloaded. Run it to install and use your custom player heads in Minecraft.\r\n" + //
-                                "    \r\n" + //
-                                "\r\n" + //
-                                "![](https://www.trmc-addons.com/add-ons/custom-player-heads/images/Video Project 2.gif)\r\n" + //
-                                "\r\n" + //
-                                "# Downloads | Official Site\r\n" + //
-                                "\r\n" + //
-                                "*   [Download Custom Player Heads](https://www.trmc-addons.com/cph)\r\n" + //
-                                "\r\n" + //
-                                "undefined");
+            sleepingBags.setTextoAddon("""
+                                Sleeping Bags is an add-on that adds functional sleeping bags for Minecraft Bedrock. Now there is no need to look for villages or other hidden places to stay the night. You can set up your gear wherever you see fit!
+                                
+                                &nbsp;
+                                
+                                [![](https://www.trmc-addons.com/assets/download.png)](https://www.trmc-addons.com/add-ons/sleeping-bags/)
+                                
+                                &nbsp;
+                                
+                                ## Main Features
+                                
+                                - **Portable Bed:** A small portable bed that is easier to carry than a regular bed.
+                                - **Sleep Anywhere:** Place it on trees, mountain ledges, or anywhere you want.
+                                - **Day Sleep:** You can now sleep during the day!
+                                - **Spawn Point:** Allows you to set a spawn point even in the Nether without exploding.
+                                - **Safety:** Phantoms will not appear while sleeping outside, and you can sleep even if monsters are nearby.
+                                
+                                &nbsp;
+                                
+                                ## Crafting
+                                
+                                To create a sleeping bag, place three wool carpets in a row on a crafting table. The color of the carpets will determine the color of the sleeping bag.
+                                
+                                &nbsp;
+                                
+                                # Downloads | Official Site
+                                
+                                *   [Download Sleeping Bags Here | Official Site](https://www.trmc-addons.com/add-ons/sleeping-bags/)
+                                """);
 
             addonRepository.save(sleepingBags);
 
@@ -482,56 +461,28 @@ public class DataInitializer implements CommandLineRunner {
             medievalStructures.setTag("pvp");
             medievalStructures.setUrlMiniatura("https://www.trmc-addons.com/add-ons/medieval-structures/thumbnail.webp");
             medievalStructures.setDescripcion("Medieval Structures is a Minecraft Bedrock add-on that adds dozens of new medieval structures to your world, powered by our own Feudal Furniture add-on!");
-            medievalStructures.setTextoAddon("Placing player heads in Minecraft is essential, and currently there is no native function in Minecraft Bedrock to do so. This tool solves that! Custom Player Heads is an online program for generating player heads!\r\n" + //
-                                "\r\n" + //
-                                "[![alt text](https://www.trmc-addons.com/add-ons/custom-player-heads/images/title.webp)](https://www.trmc-addons.com/cph)\r\n" + //
-                                "\r\n" + //
-                                "<h2 style=\"text-align:center\">[![](https://www.trmc-addons.com/add-ons/custom-paintings/images/customize.webp)](https://www.trmc-addons.com/cph)</h2><h2 style=\"text-align:center\">Main Features:</h2>\r\n" + //
-                                "\r\n" + //
-                                "**Player Heads in Minecraft:** Player heads are a very popular item in the Java Edition of Minecraft. They are widely used for roleplay, trophies, decoration, and many creative purposes.\r\n" + //
-                                "\r\n" + //
-                                "**Decoration Options:** Custom head skins allow you to simulate many objects such as portals, mini blocks, books, food, and much more, making them perfect for detailed builds and creative designs.\r\n" + //
-                                "\r\n" + //
-                                "**Put it on your head:** Imported heads can be equipped on your head, working exactly like a vanilla item.\r\n" + //
-                                "\r\n" + //
-                                "You can preview how the head block will look below everything in the online editor.\r\n" + //
-                                "\r\n" + //
-                                "## Images\r\n" + //
-                                "\r\n" + //
-                                "![](https://www.trmc-addons.com/add-ons/custom-player-heads/images/2.webp)\r\n" + //
-                                "\r\n" + //
-                                "![](https://www.trmc-addons.com/add-ons/custom-player-heads/images/1.webp)\r\n" + //
-                                "\r\n" + //
-                                "![](https://www.trmc-addons.com/add-ons/custom-player-heads/images/3.webp)\r\n" + //
-                                "\r\n" + //
-                                "## Crafting\r\n" + //
-                                "\r\n" + //
-                                "All generated heads will only be available if you place a soul sand block in the stonecutter.\r\n" + //
-                                "\r\n" + //
-                                " \r\n" + //
-                                "\r\n" + //
-                                "## 🔴  IMPORTANT | TUTORIAL: Using the Editor  🔴\r\n" + //
-                                "\r\n" + //
-                                " \r\n" + //
-                                "\r\n" + //
-                                "To get your add-on, follow these steps in our web editor: [https://www.trmc-addons.com/cph](https://www.trmc-addons.com/cph)\r\n" + //
-                                "\r\n" + //
-                                "1.  Upload Skins: Upload the Minecraft head skins you need.\r\n" + //
-                                "    \r\n" + //
-                                "2.  Add Heads: Once all the head skins are uploaded, make sure everything is ready.\r\n" + //
-                                "    \r\n" + //
-                                "3.  Export: Click \"Export Addon\" to generate your file.\r\n" + //
-                                "    \r\n" + //
-                                "4.  Download & Use: A .mcaddon file will be downloaded. Run it to install and use your custom player heads in Minecraft.\r\n" + //
-                                "    \r\n" + //
-                                "\r\n" + //
-                                "![](https://www.trmc-addons.com/add-ons/custom-player-heads/images/Video Project 2.gif)\r\n" + //
-                                "\r\n" + //
-                                "# Downloads | Official Site\r\n" + //
-                                "\r\n" + //
-                                "*   [Download Custom Player Heads](https://www.trmc-addons.com/cph)\r\n" + //
-                                "\r\n" + //
-                                "undefined");
+            medievalStructures.setTextoAddon("""
+                                Medieval Structures is a Minecraft Bedrock add-on that adds dozens of new medieval structures to your world, powered by our own Feudal Furniture add-on!
+                                
+                                &nbsp;
+                                
+                                [![](https://www.trmc-addons.com/assets/download.png)](https://www.trmc-addons.com/add-ons/medieval-structures/)
+                                
+                                &nbsp;
+                                
+                                ## Features
+                                
+                                - **Dozens of Structures:** Adds a variety of medieval structures like watchtowers, small houses, ruins, and more.
+                                - **Seamless Integration:** Designed to fit perfectly into the vanilla Minecraft world generation.
+                                - **Furniture Included:** Structures come pre-decorated with Feudal Furniture blocks.
+                                - **Exploration:** Encourages exploration by rewarding players with loot and interesting locations.
+                                
+                                &nbsp;
+                                
+                                # Downloads | Official Site
+                                
+                                *   [Download Medieval Structures Here | Official Site](https://www.trmc-addons.com/add-ons/medieval-structures/)
+                                """);
 
             addonRepository.save(medievalStructures);
 
@@ -548,6 +499,56 @@ public class DataInitializer implements CommandLineRunner {
             addonRepository.insertarCreadorAddon(adminUsuario.getId(), medievalStructures.getId(), "aceptado");
 
 
+            Addon customBackgroundMenu = new Addon();
+            customBackgroundMenu.setNombre("Custom Background Menu");
+            customBackgroundMenu.setTipo("skin");
+            customBackgroundMenu.setTag("pvp");
+            customBackgroundMenu.setUrlMiniatura("https://www.trmc-addons.com/add-ons/custom-background-menu/thumbnail.webp");
+            customBackgroundMenu.setDescripcion("This is a powerful tool that allows you to fully customize the Minecraft Bedrock start screen. Through the TRMC ADDON web editor, you can personalize your game by adding custom images or animated GIFs that will appear as your main menu background.");
+            customBackgroundMenu.setTextoAddon("""
+                    This is a powerful tool that allows you to fully customize the **Minecraft Bedrock** start screen. Through the TRMC ADDON web editor, you can add custom images or animated GIFs as your main menu background.
+                    
+                    Instantly change the look of your game with your own designs and enjoy a unique experience every time you open Minecraft.
+                    
+                    &nbsp;
+                    
+                    [![](https://www.trmc-addons.com/assets/download.png)](https://www.trmc-addons.com/add-ons/custom-background-menu/)
+                    
+                    &nbsp;
+                    
+                    ## Main Features
+                    
+                    - **Custom Backgrounds:** Replace the boring default panorama with any image (landscapes, fanart, etc.).
+                    - **GIF Support:** Want a moving background? Upload a GIF and the editor will automatically process the frames to create a smooth animation in-game.
+                    - **Real-Time Simulator:** Preview how the buttons will look over your image to ensure perfect visibility and a professional finish.
+                    
+                    &nbsp;
+                    
+                    ## 💡 Creative Ideas
+                    
+                    - **Branding:** Create a unique look for your Realm or Server with a custom logo or thematic background.
+                    - **Aesthetics:** Match your menu with your favorite texture pack or style.
+                    
+                    &nbsp;
+                    
+                    # Downloads | Official Site
+                    
+                    *   [Download Custom Background Menu Here | Official Site](https://www.trmc-addons.com/add-ons/custom-background-menu/)
+                    """);
+
+            addonRepository.save(customBackgroundMenu);
+
+            Archivo customBackgroundMenuFile = new Archivo();
+            customBackgroundMenuFile.setNombreMostrado("Custom Background Menu");
+            customBackgroundMenuFile.setUrl("3dc8c67e-5ea0-4e23-a099-4f94974266b5_PHYSICS_GLUE_v0.3.mcaddon");
+            customBackgroundMenuFile.setVersionJuego("1.14+");
+            customBackgroundMenuFile.setVersionAddon("v1.0");
+            customBackgroundMenuFile.setTipo("mcaddon");
+            customBackgroundMenuFile.setDisponible(true);
+            customBackgroundMenuFile.setAddon(customBackgroundMenu);
+            archivoRepository.save(customBackgroundMenuFile);
+
+            addonRepository.insertarCreadorAddon(adminUsuario.getId(), customBackgroundMenu.getId(), "aceptado");
         }
     }
 }
